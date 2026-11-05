@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>منصة عطاءات ومناقصات غزة الشاملة</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#F2F6F7;--surface:#FFFFFF;--ink:#13262C;--mute:#5B6E75;--line:#D8E2E5;--brand:#0B5C6E;--brand-ink:#FFFFFF;--ok:#1E7A4F;--warn:#B86E00;--bad:#B3261E;--chip:#E4EEF0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0D1A1E;--surface:#14262C;--ink:#E6EFF1;--mute:#93A8AE;--line:#27404A;--brand:#4FB3C9;--brand-ink:#06232B;--ok:#58C08A;--warn:#E6A23C;--bad:#F2877F;--chip:#1D343B;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0D1A1E;--surface:#14262C;--ink:#E6EFF1;--mute:#93A8AE;--line:#27404A;--brand:#4FB3C9;--brand-ink:#06232B;--ok:#58C08A;--warn:#E6A23C;--bad:#F2877F;--chip:#1D343B;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.6 "IBM Plex Sans Arabic",Tahoma,"Segoe UI",sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--brand);z-index:30}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--brand);color:var(--brand-ink);padding:12px 16px 0}
+h1{margin:0 0 10px;font-size:20px;font-weight:700}
+.search{width:100%;border:0;border-radius:10px;padding:10px 14px;font:inherit;background:var(--surface);color:var(--ink)}
+.tabs{display:flex;gap:4px;margin-top:10px}
+.tab{flex:1;border:0;background:transparent;color:inherit;font:inherit;font-weight:500;padding:10px 4px;opacity:.75;border-bottom:3px solid transparent;cursor:pointer}
+.tab[aria-selected="true"]{opacity:1;border-color:currentColor;font-weight:700}
+main{max-width:720px;margin:0 auto;padding:14px 14px 90px}
+.filters{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 14px;font:inherit;font-size:13px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.note{background:var(--chip);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--mute);margin-bottom:12px;display:flex;gap:10px;align-items:center;justify-content:space-between}
+.note button{flex:none}.note{flex-wrap:wrap}
+.card{display:flex;width:100%;text-align:start;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;padding:0;overflow:hidden;font:inherit;color:inherit;cursor:pointer}
+.days{flex:none;width:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px;background:var(--chip);color:var(--ok)}
+.days b{font-size:28px;line-height:1.1;font-weight:700}
+.days span{font-size:12px}
+.days.soon{color:var(--warn)}.days.urgent{color:var(--bad)}.days.over{color:var(--mute)}
+.body{padding:10px 12px;min-width:0;flex:1}
+.body h3{margin:0 0 4px;font-size:15px;font-weight:700;line-height:1.5}
+.org{color:var(--brand);font-weight:500;font-size:13px}
+.meta{color:var(--mute);font-size:12px;margin-top:4px;display:flex;flex-wrap:wrap;gap:4px 12px}
+.tag{background:var(--chip);border-radius:6px;padding:0 8px;font-size:11px;color:var(--mute)}
+.empty{text-align:center;color:var(--mute);padding:40px 10px}
+.group{margin:16px 0 6px;font-weight:700;font-size:14px;color:var(--mute)}
+.inst{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.inst small{color:var(--mute);display:block;font-size:12px}
+.btn{border:1px solid var(--brand);background:var(--brand);color:var(--brand-ink);border-radius:10px;padding:9px 16px;font:inherit;font-weight:500;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.alt{background:transparent;color:var(--brand)}
+.btn.sm{padding:4px 12px;font-size:13px}
+.btn.del{border-color:var(--bad);color:var(--bad);background:transparent}
+.fab{position:fixed;inset-inline-start:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:15;width:56px;height:56px;border-radius:50%;font-size:28px;line-height:1;padding:0;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40;display:none;align-items:flex-end;justify-content:center}
+.sheet-bg.on{display:flex}
+.sheet{background:var(--surface);width:100%;max-width:720px;max-height:90%;overflow:auto;border-radius:18px 18px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px))}
+.sheet h2{margin:0 0 6px;font-size:18px;line-height:1.5}
+.row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.row span:first-child{color:var(--mute)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+label{display:block;font-size:13px;color:var(--mute);margin:10px 0 3px}
+input,select,textarea{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:9px 10px;font:inherit}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+a.src{display:block;color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
+.top{display:flex;gap:10px;align-items:flex-start}.tt{min-width:0;flex:1}
+.logo{flex:none;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;overflow:hidden;background:var(--chip)}
+.logo img{width:100%;height:100%;object-fit:contain;background:#fff}
+mark{background:var(--warn);color:#fff;border-radius:3px;padding:0 2px}
+#lb{display:none}
+.menu{position:relative;margin:10px 0 12px}.mbtn{width:100%;border:0;border-radius:10px;padding:10px 14px;font:inherit;font-weight:700;background:rgba(255,255,255,.18);color:inherit;text-align:start;cursor:pointer}
+.mlist{position:absolute;inset-inline:0;top:100%;z-index:25;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;margin-top:4px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.mlist button{display:block;width:100%;text-align:start;border:0;background:transparent;color:inherit;font:inherit;padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer}.mlist[hidden]{display:none}
+header{padding:10px 14px 12px}.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+h1{margin:0;font-size:18px}.menu{margin:0}.mbtn{width:auto;padding:7px 14px;font-size:14px}
+.mlist{inset-inline:auto;inset-inline-end:0;min-width:210px}
+.mlist a{display:block;padding:12px 14px;color:inherit;text-decoration:none;border-bottom:1px solid var(--line)}
+.msep{height:6px;background:var(--bg)}
+.search{padding:9px 14px}
+.fbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.fbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 14px;font:inherit;font-size:14px;cursor:pointer}
+.bdg{background:var(--brand);color:var(--brand-ink);border-radius:999px;padding:0 7px;font-size:12px}
+.cnt{color:var(--mute);font-size:13px}
+.days,.days.soon,.days.urgent{color:var(--bad);background:rgba(179,38,30,.10)}.days.over{color:var(--mute);background:var(--chip)}.days span{font-weight:700}
+.fpanel{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+.fl{font-size:12px;color:var(--mute);margin:0;display:flex;flex-direction:column;gap:4px}
+.fl select{padding:8px;font-size:14px}
+.card.new{border:2px solid var(--bad)}.card.new h3{color:var(--bad)}.tag.new{background:var(--bad);color:#fff}
+.orgname{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--brand);text-align:start;cursor:pointer;line-height:1.5}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow"><h1>عطاءات غزة الشاملة</h1><div class="menu"><button id="mn" class="mbtn" aria-haspopup="true">العطاءات والمناقصات ▾</button><div id="mnl" class="mlist" hidden><button data-tab="tenders">العطاءات والمناقصات</button><button data-tab="orgs">دليل المؤسسات</button><button data-tab="sources">المصادر الرسمية</button><div class="msep"></div><button id="csv">نسخ القائمة CSV</button><a href="https://www.jobs.ps/tenders" target="_blank" rel="noopener">كل عطاءات جوبس</a></div></div></div>
+  <input id="q" class="search" type="search" placeholder="ابحث: عنوان، مؤسسة، مجال، مكان" aria-label="بحث"><div id="upd" style="font-size:12px;opacity:.85;margin-top:6px"></div>
+</header>
+<main id="main"></main>
+<button class="btn fab" id="add" aria-label="إضافة عطاء">+</button>
+<div class="sheet-bg" id="bg"><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+
+<script>
+var SECTORS=["إنشاءات وبنية تحتية","صحة وأدوية","إغاثة وغذاء","طاقة وكهرباء","تقنية معلومات","خدمات واستشارات","توريدات عامة","مياه وصرف صحي","نقل ومركبات","تعليم وقرطاسية","طباعة ودعاية","زراعة وثروة حيوانية"];
+var TYPES=["عطاء","مناقصة","طلب عروض أسعار","أمر شراء وتوريد","أمر بيع","مزايدة وبيع","استيراد وتصدير","دعوة تقديم مقترحات"];
+var ORGS=[
+ ["الأونروا","الأمم المتحدة","https://www.unrwa.org/ar/procurements/tenders"],
+ ["برنامج الأمم المتحدة الإنمائي UNDP","الأمم المتحدة","https://www.ungm.org"],
+ ["مكتب الأمم المتحدة لخدمات المشاريع UNOPS","الأمم المتحدة","https://www.ungm.org"],
+ ["اليونيسف UNICEF","الأمم المتحدة","https://www.ungm.org"],
+ ["برنامج الأغذية العالمي WFP","الأمم المتحدة","https://www.ungm.org"],
+ ["منظمة الصحة العالمية WHO","الأمم المتحدة","https://www.ungm.org"],
+ ["صندوق الأمم المتحدة للسكان UNFPA","الأمم المتحدة","https://www.ungm.org"],
+ ["منظمة الأغذية والزراعة FAO","الأمم المتحدة","https://www.ungm.org"],
+ ["منظمات دولية غير حكومية","منظمات دولية وأهلية","https://ochaopt.org"],
+ ["شبكة المنظمات الأهلية الفلسطينية","منظمات دولية وأهلية","https://pngoportal.org"],
+ ["جمعية الهلال الأحمر الفلسطيني","منظمات دولية وأهلية",""],
+ ["وزارة الصحة","جهات حكومية",""],
+ ["وزارة الأشغال العامة والإسكان","جهات حكومية",""],
+ ["وزارة الزراعة","جهات حكومية",""],
+ ["بلديات قطاع غزة","جهات حكومية",""],
+ ["شركة توزيع كهرباء محافظات غزة","جهات حكومية",""],
+ ["منظمة العمل الدولية ILO","الأمم المتحدة","https://www.ungm.org"],
+ ["ONU المرأة UN Women","الأمم المتحدة","https://www.ungm.org"],
+ ["دائرة الأمم المتحدة للأعمال المتعلقة بالألغام UNMAS","الأمم المتحدة","https://www.ungm.org"],
+ ["جمعية أصدقاء البيئة الفلسطينية PEF","منظمات أهلية محلية","https://www.pefrafah.org.ps"],
+ ["قرى الأطفال SOS فلسطين","منظمات أهلية محلية",""],
+ ["لجنة الانتخابات المركزية","جهات حكومية","https://www.elections.ps"],
+ ["مكتب تنسيق الشؤون الإنسانية OCHA","الأمم المتحدة","https://ochaopt.org"],
+ ["أوكسفام Oxfam","منظمات دولية غير حكومية",""],
+ ["أطباء بلا حدود MSF","منظمات دولية غير حكومية",""],
+ ["أنقذوا الأطفال Save the Children","منظمات دولية غير حكومية",""],
+ ["أكتد ACTED","منظمات دولية غير حكومية",""],
+ ["المجلس النرويجي للاجئين NRC","منظمات دولية غير حكومية",""],
+ ["لجنة الإنقاذ الدولية IRC","منظمات دولية غير حكومية",""],
+ ["كير CARE","منظمات دولية غير حكومية",""],
+ ["الرؤية العالمية World Vision","منظمات دولية غير حكومية",""],
+ ["الإغاثة الإسلامية Islamic Relief","منظمات دولية غير حكومية",""],
+ ["أنيرا Anera","منظمات دولية غير حكومية",""],
+ ["ميرسي كوربس Mercy Corps","منظمات دولية غير حكومية",""],
+ ["اللجنة الدولية للصليب الأحمر ICRC","منظمات دولية غير حكومية",""],
+ ["ميدغلوبال MedGlobal","منظمات دولية غير حكومية",""],
+ ["اتحاد لجان العمل الصحي","منظمات أهلية محلية",""],
+ ["برنامج غزة للصحة النفسية","منظمات أهلية محلية",""],
+ ["جمعية الإغاثة الطبية الفلسطينية","منظمات أهلية محلية",""],
+ ["جمعية الصلاح الإسلامية","منظمات أهلية محلية",""],
+ ["وزارة التربية والتعليم","جهات حكومية",""],
+ ["وزارة المالية","جهات حكومية",""],
+ ["وزارة الاقتصاد الوطني","جهات حكومية",""],
+ ["وزارة الاتصالات وتكنولوجيا المعلومات","جهات حكومية",""],
+ ["سلطة المياه","جهات حكومية",""],
+ ["سلطة الطاقة والموارد الطبيعية","جهات حكومية",""],
+ ["بلدية غزة","بلديات ومرافق",""],
+ ["بلدية خان يونس","بلديات ومرافق",""],
+ ["بلدية رفح","بلديات ومرافق",""],
+ ["بلدية دير البلح","بلديات ومرافق",""],
+ ["بلدية جباليا","بلديات ومرافق",""],
+ ["بلدية بيت لاهيا","بلديات ومرافق",""],
+ ["مصلحة مياه بلديات الساحل","بلديات ومرافق",""],
+ ["شركة الاتصالات الفلسطينية بالتل","بلديات ومرافق",""],
+ ["الجامعة الإسلامية","تعليم وصحة",""],
+ ["جامعة الأزهر","تعليم وصحة",""],
+ ["جامعة الأقصى","تعليم وصحة",""],
+ ["مجمع الشفاء الطبي","تعليم وصحة",""],
+ ["مستشفى ناصر","تعليم وصحة",""],
+ ["المستشفى الأهلي العربي","تعليم وصحة",""],
+ ["بنك فلسطين","قطاع خاص",""],
+ ["البنك الإسلامي الفلسطيني","قطاع خاص",""],
+ ["بنك القدس","قطاع خاص",""],
+ ["شركات خاصة وموردون","قطاع خاص",""]
+];
+function addOrgs(g,a,u){a.forEach(function(n){if(!ORGS.some(function(o){return o[0]===n}))ORGS.push([n,g,u||""])})}
+addOrgs("الأمم المتحدة",["منظمة الهجرة الدولية IOM","موئل الأمم المتحدة UN-Habitat","اليونسكو UNESCO","مكتب الأمم المتحدة لتنسيق الشؤون الإنسانية (صندوق التمويل الإنساني)"],"https://www.ungm.org");
+addOrgs("منظمات دولية غير حكومية",["أطباء العالم Médecins du Monde","الإغاثة الطبية للفلسطينيين MAP","الإنسانية والإدماج HI","بريمير أورجانس PUI","المجلس الدنماركي للاجئين DRC","مساعدات الشعب النرويجي NPA","أكشن إيد ActionAid","كريستيان إيد Christian Aid","كاريتاس Caritas","خدمات الإغاثة الكاثوليكية CRS","بلان إنترناشونال Plan International","وور تشايلد War Child","ويلثونجر هيلفه Welthungerhilfe","ويرلد WeWorld","إنترسوس INTERSOS","غلوبال كوميونتيز Global Communities","ريليف إنترناشونال Relief International","الفيلق الطبي الدولي IMC","مطبخ العالم المركزي WCK","دايركت ريليف Direct Relief","مسلم إيد Muslim Aid","مركز الملك سلمان للإغاثة KSrelief","قطر الخيرية Qatar Charity","الهلال الأحمر القطري","الهلال الأحمر المصري","هيئة الإغاثة التركية IHH","الهيئة الخيرية الأردنية الهاشمية","اللجنة المصرية لإغاثة غزة"]);
+addOrgs("منظمات أهلية محلية",["جمعية غزة للزراعة المستدامة والبيئة الصديقة SAFE","جمعية بيادر للبيئة والتنمية","جمعية النخيل","المركز السعودي للثقافة والتراث KSACH","جمعية أطفالنا للصم","مركز التدريب المجتمعي وإدارة الأزمات CTCCM","مؤسسة التعاون Welfare Association","مركز الميزان لحقوق الإنسان","المركز الفلسطيني لحقوق الإنسان","جمعية الثقافة والفكر الحر","جمعية إنقاذ المستقبل الشبابي","مركز شؤون المرأة","جمعية الإغاثة الطبية الفلسطينية"]);
+addOrgs("منظمات أهلية محلية",["الإغاثة الزراعية الفلسطينية PARC"],"https://pal-arc.org/ar/tenders");
+addOrgs("جهات حكومية",["وزارة الحكم المحلي","وزارة التنمية الاجتماعية","وزارة العمل","وزارة النقل والمواصلات","وزارة الأوقاف والشؤون الدينية","هيئة الشراء العام"]);
+addOrgs("بلديات ومرافق",["بلدية بيت حانون","بلدية النصيرات","بلدية البريج","بلدية المغازي","بلدية الزوايدة","بلدية القرارة","بلدية عبسان الكبيرة","شركة جوال"]);
+addOrgs("تعليم وصحة",["جامعة فلسطين","الكلية الجامعية للعلوم التطبيقية","مستشفى القدس","مستشفى الأمل","مستشفى الدرة","مستشفى العودة","مستشفى الأقصى","مستشفى غزة الأوروبي","مستشفى كمال عدوان","مستشفى العيون سانت جون","مستشفى الرنتيسي للأطفال"]);
+addOrgs("قطاع خاص",["بنك الاستثمار الفلسطيني","البنك العربي","بنك القاهرة عمان","اتحاد المقاولين الفلسطينيين"]);
+addOrgs("جهات مانحة ومموّلة",["الاتحاد الأوروبي EU","الصندوق الإنساني للأرض الفلسطينية oPt HF","الوكالة الألمانية للتعاون GIZ","بنك التنمية الألماني KfW","الوكالة السويدية Sida","المملكة المتحدة FCDO","وكالة التنمية الفرنسية AFD","جايكا JICA","البنك الدولي","البنك الإسلامي للتنمية","جمهورية كوريا KOICA"]);
+ORGS.forEach(function(o){if(o[2]==="https://www.elections.ps")o[2]=""});
+var SOURCES=[
+ ["البوابة الموحدة للشراء العام في فلسطين","https://www.shiraa.gov.ps"],
+ ["فلسطين تندرز Palestine Tenders","https://www.palestinetenders.com/"],
+ ["عطاءات الأونروا","https://www.unrwa.org/ar/procurements/tenders"],
+ ["عطاءات فلسطين، قسم غزة","https://tender4arab.com/Search.aspx?gaza=1"],
+ ["جوبس، عطاءات ومناقصات فلسطين","https://www.jobs.ps/tenders"],
+ ["بوابة الأمم المتحدة للمشتريات UNGM","https://www.ungm.org"],
+ ["DevelopmentAid، عطاءات المانحين","https://www.developmentaid.org"],
+ ["خرائط OCHA للمؤسسات العاملة","https://ochaopt.org"],
+ ["شبكة المنظمات الأهلية الفلسطينية","https://pngoportal.org"]
+];
+var KEY="gaza_tenders_v1",DKEY="gaza_hide_demo_v1";
+function off(n){var d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
+var DEMO=[
+ {id:"d1",title:"توريد وتسليم مستهلكات طبية وأدوية لمستشفيات غزة",org:"مكتب الأمم المتحدة لخدمات المشاريع UNOPS",sector:SECTORS[1],pub:off(-10),end:off(2),desc:"مثال توضيحي لشكل العطاء. استبدله بعطاء حقيقي من المصادر.",url:"https://www.ungm.org"},
+ {id:"d2",title:"توريد مولدات كهرباء وكوابل داخل القطاع",org:"برنامج الأمم المتحدة الإنمائي UNDP",sector:SECTORS[3],pub:off(-5),end:off(9),desc:"مثال توضيحي لشكل العطاء.",url:"https://www.ungm.org"},
+ {id:"d3",title:"تنفيذ مشاريع زراعية: حدائق منزلية",org:"الأونروا",sector:SECTORS[2],pub:off(-3),end:off(16),desc:"مثال توضيحي لشكل العطاء.",url:"https://www.unrwa.org/ar/procurements/tenders"},
+ {id:"d4",title:"توريد وتركيب أجهزة أشعة رقمية متنقلة",org:"جمعية الهلال الأحمر الفلسطيني",sector:SECTORS[1],pub:off(-1),end:off(24),desc:"مثال توضيحي لشكل العطاء.",url:"https://www.jobs.ps/tenders"},
+ {id:"d5",title:"خدمات استشارية مالية ومحاسبية",org:"منظمات دولية غير حكومية",sector:SECTORS[5],pub:off(-20),end:off(-2),desc:"مثال على عطاء منتهي.",url:"https://tender4arab.com/Search.aspx?gaza=1"},
+ {id:"d6",title:"أمر توريد مواسير مياه شرب",org:"مصلحة مياه بلديات الساحل",sector:SECTORS[7],pub:off(-2),end:off(5),desc:"مثال توضيحي لأمر شراء وتوريد.",url:""},
+ {id:"d7",title:"بيع سيارات مستخدمة بالمزاد بالظرف المختوم",org:"جمعية الهلال الأحمر الفلسطيني",sector:SECTORS[8],pub:off(-1),end:off(12),desc:"مثال توضيحي لمزايدة.",url:""},
+ {id:"d8",title:"توريد مطبوعات ولوازم مكتبية",org:"وزارة التربية والتعليم",sector:SECTORS[9],pub:off(0),end:off(20),desc:"مثال توضيحي لمناقصة.",url:""}
+].map(function(t){t.demo=true;t.type=({d1:"طلب عروض أسعار",d2:"مناقصة",d3:"عطاء",d4:"مناقصة",d5:"دعوة تقديم مقترحات",d6:"أمر شراء وتوريد",d7:"مزايدة وبيع",d8:"مناقصة"})[t.id]||"عطاء";return t});
+var REAL=[
+ {id:"r1",title:"إزالة الركام من الطرق والمباني العامة والسكنية شمال وادي غزة، الجزء الثالث",org:"جمعية أصدقاء البيئة الفلسطينية PEF",sector:SECTORS[0],type:"مناقصة",pub:"2026-05-12",end:"2026-05-19",desc:"رقم المرجع PEF-TD-903-561-2026. تسليم العروض باليد في مقر الجمعية في خان يونس. للمقاولين المصنفين.",url:"https://www.jobs.ps/en/tenders/pef-td-903-561-2026-14709.html"},
+ {id:"r2",title:"إعادة تأهيل وصيانة ثلاثة مصادر مياه وثلاث شبكات صرف صحي داخل قطاع غزة",org:"المجلس النرويجي للاجئين NRC",sector:SECTORS[7],type:"مناقصة",pub:"",end:"2026-04-26",desc:"رقم المناقصة ITB PS-6-2026. التقديم إلكترونياً عبر نظام المناقصات الإلكترونية. زيارة الموقع 20 أبريل 2026.",url:"https://www.jobs.ps/en/tenders/itb-ps-6-2026-14346.html"},
+ {id:"r3",title:"توريد مراحيض ودورات مياه داخل قطاع غزة",org:"المجلس النرويجي للاجئين NRC",sector:SECTORS[7],type:"أمر شراء وتوريد",pub:"",end:"2026-04-09",desc:"رقم المناقصة ITB PS-5-2026. التقديم إلكترونياً عبر نظام المناقصات الإلكترونية.",url:"https://www.jobs.ps/en/tenders/itb-ps-5-2026-14179.html"},
+ {id:"r4",title:"توريد فروش غاز",org:"قرى الأطفال SOS فلسطين",sector:SECTORS[6],type:"مناقصة",pub:"2026-05-11",end:"2026-05-14",desc:"عطاء رقم 05-2026-T34 بالظرف المغلق. الوثائق من المقر المؤقت في مواصي خان يونس دون رسوم.",url:"https://www.jobs.ps/en/tenders/05-2026-t34-14698.html"},
+ {id:"r5",title:"تأهيل مكتب لجنة الانتخابات المركزية الإقليمي في مدينة غزة (مشروع ممول من الاتحاد الأوروبي)",org:"لجنة الانتخابات المركزية",sector:SECTORS[0],type:"مناقصة",pub:"",end:"2026-08-16",desc:"مناقصة رقم 041/2026 للمقاولين الفلسطينيين المصنفين. التقديم إلكترونياً. الاجتماع التمهيدي 8 أغسطس 2026.",url:"https://www.jobs.ps/en/tenders/eu-project-rehabilitation-of-the-central-elections-commission-regional-office-in-gaza-city-16a6b351ed6429-15610.html"},
+ {id:"r6",title:"توريد طرود غذائية (لموردي قطاع غزة فقط)",org:"الأونروا",sector:SECTORS[2],type:"طلب عروض أسعار",pub:"2026-02-08",end:"2026-02-09",desc:"ITB # G2/R/01B/2026. العينات مطلوبة بنفس موعد الإغلاق.",url:"https://www.ungm.org/Public/Notice/290401",src:"UNGM"}
+].map(function(t){t.real=true;t.src=t.src||"jobs.ps";return t});
+var LIVE=[["l1","Company Needs Assessment and In-Kind Support Recommendations – Gaza Strip",5,"2026-11-17"],["l2","صيانة شبكات الصرف الصحي في دير البلح",7,"2026-11-10"],["l3","تقديم خدمات تدقيق حسابات المشاريع",5,"2026-11-10"],["l4","توريد الدواجن واللحوم المجمدة",2,"2026-11-08"],["l5","إنشاء وتأهيل المساحات الصديقة للأطفال (CFS) – قطاع غزة",0,"2026-11-10"],["l6","استئجار قاعة تدريب مجهزة شاملة خدمات الضيافة وتوريد وجبات غداء لتدريبات الإسعافات الأولية النفسية (PFA)",5,"2026-11-07"],["l7","توريد مستلزمات تجهيز نقاط ميدانية",6,"2026-11-08"],["l8","عرض سعر لتطوير وتحديث الأنظمة المؤسسية وحوسبة الإجراءات",4,"2026-11-08","طلب عروض أسعار"],["l9","إنشاء وتجهيز مساحة آمنة صديقة للأطفال",0,"2026-11-09"],["l10","Rehabilitation of the Ground Floor Medical Departments and Equipping of the Second Operation Room at Saint John Hospital – Gaza",1,"2026-11-12"],["l11","توريد حقائب كرامة",2,"2026-11-09"]].map(function(a){return{id:a[0],title:a[1],org:"راجع الإعلان على jobs.ps",sector:SECTORS[a[2]],type:a[4]||"عطاء",pub:"",end:a[3],desc:"من قائمة jobs.ps الرئيسية لقطاع غزة. ظهر في القائمة يوم وشهر الانتهاء فقط، والسنة مفترضة 2026، ولم تُفتح تفاصيل الإعلان. افتح الموقع وتأكد من الموعد والجهة قبل التقديم.",url:"https://www.jobs.ps/en/tenders/0",src:"jobs.ps",real:true,verify:true}});
+var SHOT=[["s1","استئجار قاعة احتفالات","قطاع غزة",5,"2026-11-11","راجع الإعلان على jobs.ps"],["s2","توريد ضيافة وهدايا تحفيزية لجلسات الإرشاد الجماعي - POD","قطاع غزة",6,"2026-11-08","راجع الإعلان على jobs.ps"],["s3","تنفيذ أعمال التأهيل والترميم والإنشاءات والأعمال الكهروميكانيكية","قطاع غزة",0,"2026-11-12","راجع الإعلان على jobs.ps"],["s4","أعمال صيانة","قطاع غزة",0,"2026-11-11","راجع الإعلان على jobs.ps"],["s5","توريد الأدوات المساعدة – عطاء رقم (2/2026)","قطاع غزة",1,"2026-11-11","أوكسفام Oxfam"],["s6","تقديم عروض استشارات هندسية لمشاريع مختلفة في مناطق الضفة الغربية","الضفة الغربية",5,"2026-11-18","راجع الإعلان على jobs.ps","دعوة تقديم مقترحات"],["s7","خدمات لوجستية محلية لمركز روتردام (مرحلة المنشأ)","رام الله",5,"2026-11-18","راجع الإعلان على jobs.ps"]].map(function(a){return{id:a[0],title:a[1],loc:a[2],sector:SECTORS[a[3]],end:a[4],org:a[5],type:a[6]||"عطاء",pub:"",desc:"من قائمة المناقصات في جوبس. تاريخ الطرح واسم الجهة غير ظاهرين في القائمة، افتح الإعلان في جوبس للتفاصيل والملفات.",url:"https://www.jobs.ps/tenders",src:"jobs.ps",real:true}});
+var PARC=[
+ ["p1446","تعبئة وتغليف وتوريد طرود خضار وفواكه طازجة – قطاع غزة",2,"قطاع غزة","PARC-PG-149-2026","2026-11-04","15:35","2026-11-08","14:00"],
+ ["p1445","توريد مواد خام – قطاع غزة",6,"قطاع غزة","PARC-PG-174-2026-RFQ","2026-11-04","12:54","2026-11-10","14:00"],
+ ["p1444","توريد غسالات ومستلزمات تنظيف وتغليف – قطاع غزة",6,"قطاع غزة","PARC-PG-173-2026-RFQ","2026-11-04","12:50","2026-11-10","14:00"],
+ ["p1443","توريد آلات ومعدات – قطاع غزة",6,"قطاع غزة","PARC-PG-172-2026-RFQ","2026-11-04","12:47","2026-11-10","14:00"],
+ ["p1441","توريد أشتال زعتر D4 (جنين، طولكرم، نابلس، قلقيلية، الخليل)",11,"الضفة الغربية","PARC-PWB-59-2026","2026-11-02","16:16","2026-11-09","14:00"],
+ ["p1440","توريد مستلزمات تأهيل الدفيئات الزراعية – قطاع غزة",11,"قطاع غزة","PARC-PG-148-2026","2026-11-02","14:55","2026-11-08","14:00"],
+ ["p1438","تعبئة وتغليف وتوريد طرود غذائية – قطاع غزة",2,"قطاع غزة","PARC-PG-147-2026","2026-11-01","14:07","2026-11-08","14:00"],
+ ["p1437","توريد مستلزمات معدنية (بروفيل وساندويش بانيل وشبك حماية) – يطا ومسافر يطا",6,"الضفة الغربية","PARC-PWB-087-2026-RFQ","2026-10-29","09:11","2026-11-05","14:00"],
+ ["p1436","توريد مستلزمات بذور وأشتال خضروات (حدائق منزلية) – بيت لحم وطولكرم",11,"الضفة الغربية","PARC-PWB-95-2026-RFQ","2026-10-28","15:31","2026-11-05","12:00"],
+ ["p1435","توريد مستلزمات ومواد زراعية وشبكات ري – جنين وطولكرم ونابلس",11,"الضفة الغربية","PARC-PWB-58-2026","2026-10-28","14:14","2026-11-09","14:23"]
+].map(function(a){return{id:a[0],title:a[1],org:"الإغاثة الزراعية الفلسطينية PARC",sector:SECTORS[a[2]],type:/RFQ$/.test(a[4])?"طلب عروض أسعار":"عطاء",loc:a[3],pub:a[5],pubTime:a[6],end:a[7],endTime:a[8],desc:"رقم العطاء: "+a[4]+". المصدر: صفحة العطاءات الرسمية للإغاثة الزراعية.",url:"https://pal-arc.org/ar/single-tender/"+a[0].slice(1),src:"pal-arc.org",real:true}});
+Object.assign(PARC[0],{funder:"Beasain / Ayuntamiento de Tolosa",delivery:"يدوي: ظرف مغلق مختوم قبل الساعة 2:00 ظهراً من يوم الأحد 08/11/2026 (استلام الكراسة مجاناً من الموقع أو من المكاتب)",obtain:"كراسة الشروط مجانية: تُحمَّل من صفحة العطاء أو تُستلم من مكاتب الجمعية",addr:"دير البلح، حكر الجامع، بجوار صالة وايت فلور، مكتب الإغاثة الزراعية، الطابق الأول، وحدة المشتريات (وفرعا خان يونس وغزة)",payment:"تحويل بنكي خلال 45 يوماً من التسليم بفواتير ضريبية أصلية، حسب توفر التمويل. العملة: يورو"});
+var S={fp:false,tab:"tenders",q:"",type:"",status:"open",sort:"end",loc:"",sector:"",org:"",user:[],hideDemo:true};
+try{S.user=JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){S.user=[]}
+try{if(localStorage.getItem(DKEY)==="show")S.hideDemo=false}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S.user))}catch(e){}}
+var LOGOS={};try{LOGOS=JSON.parse(localStorage.getItem("gaza_logos_v1")||"{}")}catch(e){}
+var ULINKS={};try{ULINKS=JSON.parse(localStorage.getItem("gaza_links_v1")||"{}")}catch(e){}
+function sel(lb,key,opts){return'<label class="fl">'+lb+'<select data-f="'+key+'">'+opts.map(function(o){return'<option value="'+esc(o[0])+'"'+(String(S[key])===o[0]?' selected':'')+'>'+esc(o[1])+'</option>'}).join("")+'</select></label>'}
+function orgStats(){var m={};all().forEach(function(t){var z=m[t.org]||(m[t.org]={a:0,b:0,c:0,o:0}),ty=t.type||"عطاء";if(/أمر|مزايدة|استيراد/.test(ty))z.b++;else if(ty==="طلب عروض أسعار")z.c++;else z.a++;if(left(t.end)>=0)z.o++});return m}
+function tot(z){return z?z.a+z.b+z.c:0}
+function rw(l,v){return'<div class="row"><span>'+l+'</span><span style="text-align:end;max-width:62%">'+(v?esc(v):'<i style="color:var(--mute);font-style:normal">غير متوفر بعد</i>')+'</span></div>'}
+var SEEN=null;try{SEEN=JSON.parse(localStorage.getItem("gaza_seen_v1"))}catch(e){}
+var FIRST=!SEEN;if(!SEEN)SEEN={};
+function issueKey(t){return t.pub?new Date(t.pub).getTime():(SEEN[t.id]||0)}
+function isNew(t){var s=SEEN[t.id];if(s&&Date.now()-s<1728e5)return true;return !!t.pub&&Date.now()-new Date(t.pub).getTime()<1728e5&&left(t.end)>=0}
+function orgSite(){var o=ORGS.filter(function(x){return x[0]===S.org})[0];return o&&o[2]?'<p><a class="btn alt sm" href="'+esc(o[2])+'" target="_blank" rel="noopener">موقع المؤسسة</a></p>':''}
+var EXTRA={r1:{delivery:"يدوي: تسليم باليد في المقر الرئيسي للجمعية",addr:"شارع الرشيد، عمارة منصور البيوك، خان يونس",endTime:"12:00 ظهراً"},r2:{delivery:"إلكتروني: عبر نظام المناقصات الإلكتروني"},r3:{delivery:"إلكتروني: عبر نظام المناقصات الإلكتروني"},r4:{delivery:"يدوي: ظرف مغلق",addr:"المقر المؤقت، مواصي خان يونس"},r5:{funder:"الاتحاد الأوروبي",delivery:"إلكتروني"}};
+var IMP=[];try{IMP=JSON.parse(localStorage.getItem("gaza_import_v1")||"[]")}catch(e){}
+var GEN=["https://www.jobs.ps/tenders","https://www.jobs.ps/en/tenders/0","https://www.ungm.org","https://www.unrwa.org/ar/procurements/tenders","https://tender4arab.com/Search.aspx?gaza=1"];
+function doImport(){var f=document.getElementById("imf").files[0],tx=document.getElementById("imt").value.trim(),D=/^\d{4}-\d{2}-\d{2}$/;
+ function go(txt){var r=document.getElementById("imr"),d;try{d=JSON.parse(txt)}catch(e){r.textContent="الملف ليس JSON صالحاً.";return}
+  if(!Array.isArray(d)){r.textContent="المتوقع قائمة عطاءات.";return}
+  var ok=d.filter(function(x){return x&&x.title&&D.test(x.end||"")}).map(function(x){return{id:String(x.id||"i"+Math.random().toString(36).slice(2,9)),title:String(x.title),org:String(x.org||"راجع الإعلان"),sector:x.sector||SECTORS[6],type:x.type||"عطاء",loc:x.loc||"",pub:D.test(x.pub||"")?x.pub:"",end:x.end,desc:String(x.desc||""),funder:x.funder||"",addr:x.addr||"",delivery:x.delivery||"",payment:x.payment||"",pubTime:x.pubTime||"",endTime:x.endTime||"",url:String(x.url||""),src:String(x.src||"مستورد"),real:true}});
+  IMP=ok;try{localStorage.setItem("gaza_import_v1",JSON.stringify(IMP))}catch(e){r.textContent="الملف كبير على ذاكرة المتصفح.";return}
+  render();r.textContent="تم استيراد "+ok.length+" إعلان من "+d.length+"."}
+ if(f){var rd=new FileReader();rd.onload=function(){go(rd.result)};rd.readAsText(f)}else if(tx)go(tx);else document.getElementById("imr").textContent="اختر ملفاً أو الصق المحتوى."}
+function lnk(t){return ULINKS[t.id]||(!t.url||GEN.indexOf(t.url)>-1?"":t.url)}
+function slugWords(u){var m=u.match(/\/tenders\/([^\/?#]+)/i);if(!m)return[];var s=m[1];try{s=decodeURIComponent(s)}catch(e){}s=s.replace(/\.html$/i,"").replace(/-\d+$/,"").replace(/[-_]+/g," ");return norm(s).split(/\s+/).filter(function(w){return w.length>1})}
+function bulkLink(){var ls=document.getElementById("bt").value.split(/\s+/).filter(function(x){return/^https?:\/\//i.test(x)}),pool=all(),ok=0,miss=[];
+ ls.forEach(function(u){var w=slugWords(u),best=null,bs=0;if(w.length){pool.forEach(function(t){var tw=norm(t.title).replace(/[^a-z0-9\u0600-\u06FF ]/g," ").split(/\s+/).filter(Boolean),hit=w.filter(function(x){return tw.indexOf(x)>-1}).length,sc=hit/w.length;if(sc>bs){bs=sc;best=t}})}
+  if(best&&bs>=0.6){ULINKS[best.id]=u;ok++}else miss.push(u)});
+ try{localStorage.setItem("gaza_links_v1",JSON.stringify(ULINKS))}catch(e){}
+ render();
+ document.getElementById("br").innerHTML=(ls.length?"تم ربط "+ok+" رابط من "+ls.length+".":"لم أجد روابط صالحة.")+(miss.length?'<br>لم يتطابق مع أي عطاء، أضفها يدوياً من تفاصيل العطاء:<br><small dir="ltr">'+miss.map(esc).join("<br>")+"</small>":"")}
+function norm(s){return String(s==null?"":s).toLowerCase().replace(/[\u064B-\u065F\u0640]/g,"").replace(/[\u0623\u0625\u0622]/g,"\u0627").replace(/\u0649/g,"\u064A").replace(/\u0629/g,"\u0647")}
+function hl(s){s=esc(s);var ws=S.q.trim().split(/\s+/).filter(Boolean).map(function(w){return esc(w).replace(/[.*+?^${}()|[\]\\]/g,"\\$&")});if(!ws.length)return s;try{return s.replace(new RegExp("("+ws.join("|")+")","gi"),"<mark>$1</mark>")}catch(e){return s}}
+function logo(o,z){return"";var u=LOGOS[o],sz=z?"width:"+z+"px;height:"+z+"px;font-size:"+Math.round(z/2.6)+"px;":"";
+ if(u)return'<div class="logo" style="'+sz+'"><img alt="" src="'+u+'"></div>';
+ var m=String(o).match(/[A-Za-z]{2,}/),ini;
+ if(/^راجع/.test(o))ini="؟";
+ else if(m)ini=m[0].slice(0,3).toUpperCase();
+ else{var w=String(o).replace(/^(جمعية|مؤسسة|وزارة|بلدية|شركة|مكتب|مصلحة|سلطة|اتحاد|لجنة|الجامعة|جامعة)\s+/,"").split(/\s+/).filter(Boolean);ini=(w[0]||"?").replace(/^ال/,"").charAt(0)+(w[1]?w[1].replace(/^ال/,"").charAt(0):"")}
+ var h=0;for(var i=0;i<o.length;i++)h=(h*31+o.charCodeAt(i))%360;
+ return'<div class="logo" style="'+sz+'background:hsl('+h+',45%,36%)">'+esc(ini)+'</div>'}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function fmt(s){if(!s)return"غير محدد";var p=s.split("-");return p[2]+"/"+p[1]+"/"+p[0]}
+function left(end){var e=new Date(end+"T23:59:59");return Math.ceil((e-new Date())/864e5)}
+function cls(n){return n<0?"over":n<=3?"urgent":n<=10?"soon":""}
+function all(){var a=S.user.concat(IMP,PARC,SHOT,REAL,S.hideDemo?[]:DEMO),sn={};a=a.filter(function(t){var k=norm(t.title).slice(0,40)+t.end;if(sn[k])return false;sn[k]=1;return true});a.forEach(function(t){var e=EXTRA[t.id];if(e)for(var f in e)if(!t[f])t[f]=e[f]});var ch=0;a.forEach(function(t){if(SEEN[t.id]===undefined){SEEN[t.id]=FIRST?0:Date.now();ch=1}});if(ch)try{localStorage.setItem("gaza_seen_v1",JSON.stringify(SEEN))}catch(e){}if(S.sort==="new")return a.sort(function(x,y){return issueKey(y)-issueKey(x)||left(x.end)-left(y.end)});return a.sort(function(x,y){var a1=left(x.end),b1=left(y.end);if((a1<0)!==(b1<0))return a1<0?1:-1;return a1<0?b1-a1:a1-b1})}
+function filtered(){var qs=norm(S.q).split(/\s+/).filter(Boolean);return all().filter(function(t){
+ return(!S.status||(S.status==="open")===(left(t.end)>=0))&&(!S.type||(t.type||"عطاء")===S.type)&&(!S.sector||t.sector===S.sector)&&(!S.org||t.org===S.org)&&(!qs.length||(function(h){return qs.every(function(w){return h.indexOf(w)>-1})})(norm([t.title,t.org,t.sector,t.type,t.loc||"قطاع غزة",t.src,t.desc].join(" "))))&&(!S.loc||(S.loc==="g")===((t.loc||"قطاع غزة")==="قطاع غزة"))})}
+function card(t){var n=left(t.end);
+ return '<button class="card'+(isNew(t)?' new':'')+'" data-id="'+esc(t.id)+'"><div class="days '+cls(n)+'">'+(n<0?'<b>منتهي</b>':'<b>'+n+'</b><span>يوم متبقٍ</span>')+'</div><div class="body"><div class="top">'+logo(t.org)+'<div class="tt"><h3>'+hl(t.title)+'</h3><div class="org">'+hl(t.org)+'</div></div></div><div class="meta"><span>الطرح: '+fmt(t.pub)+'</span><span>الانتهاء: '+fmt(t.end)+'</span></div><div class="meta">'+(isNew(t)?'<span class="tag new">جديد</span>':'')+'<span class="tag" style="background:var(--brand);color:var(--brand-ink)">'+esc(t.type||"عطاء")+'</span><span class="tag">'+esc(t.sector)+'</span>'+(t.demo?'<span class="tag">مثال</span>':'')+(t.loc?'<span class="tag">'+esc(t.loc)+'</span>':'')+(t.src?'<span class="tag">'+esc(t.src)+'</span>':'')+(t.verify?'<span class="tag" style="color:var(--warn)">تحقق قبل التقديم</span>':'')+'<span class="tag" data-info="1" style="margin-inline-start:auto;color:var(--brand);cursor:pointer">تفاصيل</span>'+'</div></div></button>'}
+function render(){
+ var m=document.getElementById("main"),h="";
+ document.getElementById("add").style.display=S.tab==="tenders"?"":"none";
+ var mnb=document.getElementById("mn");if(mnb)mnb.textContent=({tenders:"العطاءات والمناقصات",orgs:"دليل المؤسسات",sources:"المصادر الرسمية"})[S.tab]+" ▾";var mnl=document.getElementById("mnl");if(mnl)mnl.hidden=true;
+ if(S.tab==="tenders"){
+  var l=filtered(),act=[S.type,S.sector,S.loc].filter(Boolean).length+(S.status!=="open"?1:0)+(S.sort!=="end"?1:0);
+  h+='<div class="fbar"><button class="fbtn" id="ft">'+(S.fp?"إخفاء التصفية ▴":"تصفية وترتيب ▾")+(act?' <b class="bdg">'+act+'</b>':'')+'</button><span class="cnt">'+l.length+' نتيجة</span></div>';
+  if(S.fp){var op=function(a,al){return[["",al]].concat(a.map(function(x){return[x,x]}))};
+   h+='<div class="fpanel">'+sel("الترتيب","sort",[["end","الأقرب انتهاءً"],["new","الأحدث إصداراً"]])+sel("الحالة","status",[["open","مفتوحة"],["","كل الحالات"],["closed","منتهية"]])+sel("المكان","loc",[["","كل الأماكن"],["g","قطاع غزة"],["x","خارج غزة"]])+sel("النوع","type",op(TYPES,"كل الأنواع"))+sel("المجال","sector",op(SECTORS,"كل المجالات"))+'<button class="btn alt sm" id="fr" style="align-self:end">إعادة الضبط</button></div>'}
+  if(S.org)h+='<div class="note"><span>المؤسسة: '+esc(S.org)+'</span><button class="btn alt sm" id="co">إلغاء</button></div>';
+  h+=l.length?l.map(card).join(""):'<div class="empty">'+(S.org?"لا توجد عطاءات لهذه المؤسسة في القائمة حالياً.":"لا توجد عطاءات مطابقة. جرّب تغيير البحث أو أضف عطاءً جديداً بزر +.")+orgSite()+'</div>';
+ }else if(S.tab==="orgs"){
+  var ST=orgStats(),P=ORGS.concat(Object.keys(ST).filter(function(n){return!ORGS.some(function(o){return o[0]===n})&&n!=="راجع الإعلان"&&n.indexOf("راجع")!==0}).map(function(n){return[n,"مؤسسات ظهرت في الإعلانات",""]}));var g={};P.forEach(function(o){if(S.q&&!norm(S.q).split(/\s+/).filter(Boolean).every(function(w){return norm(o[0]).indexOf(w)>-1}))return;(g[o[1]]=g[o[1]]||[]).push(o)});
+  if(!Object.keys(g).length)h+='<div class="empty">لا توجد مؤسسة بهذا الاسم.</div>';
+  Object.keys(g).forEach(function(k){h+='<div class="group">'+esc(k)+'</div>';g[k].sort(function(a,b){return tot(ST[b[0]])-tot(ST[a[0]])}).forEach(function(o){
+   var z=ST[o[0]]||{a:0,b:0,c:0,o:0};
+   h+='<div class="inst"><div class="top" style="align-items:center">'+logo(o[0])+'<div class="tt"><button class="orgname" data-org="'+esc(o[0])+'">'+hl(o[0])+'</button><small>الإجمالي '+tot(z)+' · عطاءات ومناقصات '+z.a+' · أوامر شراء/توريد '+z.b+' · عروض أسعار '+z.c+(z.o?' · مفتوحة '+z.o:'')+'</small></div></div><div>'+(o[2]?'<a class="btn alt sm" href="'+esc(o[2])+'" target="_blank" rel="noopener">الموقع</a>':'')+'</div></div>'})});
+ }else{
+  SOURCES.forEach(function(s){h+='<div class="inst"><div>'+esc(s[0])+'</div><a class="btn alt sm" href="'+esc(s[1])+'" target="_blank" rel="noopener">فتح</a></div>'});
+ }
+ m.innerHTML=h;
+}
+function openSheet(html){var s=document.getElementById("sheet");s.innerHTML=html;document.getElementById("bg").classList.add("on")}
+function closeSheet(){document.getElementById("bg").classList.remove("on")}
+function detail(id){
+ var t=all().filter(function(x){return x.id===id})[0];if(!t)return;var n=left(t.end);
+ openSheet('<div class="top">'+logo(t.org,56)+'<div class="tt"><h2>'+esc(t.title)+'</h2><div class="org">'+esc(t.org)+'</div></div></div><div style="margin:8px 0 0"><button class="btn alt sm" id="lb">'+(LOGOS[t.org]?"تغيير شعار المؤسسة":"رفع شعار المؤسسة")+'</button><input type="file" accept="image/*" id="lf" data-org="'+esc(t.org)+'" data-id="'+esc(t.id)+'" style="display:none"></div>'+
+ rw("المؤسسة صاحبة العطاء",t.org)+rw("الجهة الممولة",t.funder)+rw("تاريخ ووقت الطرح",t.pub?fmt(t.pub)+(t.pubTime?" — "+t.pubTime:""):"")+
+ rw("تاريخ ووقت الانتهاء",fmt(t.end)+(t.endTime?" — "+t.endTime:""))+rw("عنوان المؤسسة في غزة",t.addr)+rw("طريقة التقديم",t.delivery)+rw("طريقة الحصول على العطاء",t.obtain)+rw("طريقة الدفع",t.payment)+
+ '<div class="row"><span>المتبقي</span><span>'+(n<0?"منتهي":n+" يوم")+'</span></div>'+
+ (t.loc?'<div class="row"><span>المكان</span><span>'+esc(t.loc)+'</span></div>':'')+'<div class="row"><span>النوع</span><span>'+esc(t.type||"عطاء")+'</span></div>'+
+ '<div class="row"><span>المجال</span><span>'+esc(t.sector)+'</span></div>'+
+ (t.desc?'<p>'+esc(t.desc)+'</p>':'')+
+ '<div class="actions">'+(lnk(t)?'<a class="btn" href="'+esc(lnk(t))+'" target="_blank" rel="noopener">الانتقال إلى رابط الإعلان</a><button class="btn alt" id="cp" data-u="'+esc(lnk(t))+'">نسخ الرابط</button>':(t.url?'<a class="btn" href="'+esc(t.url)+'" target="_blank" rel="noopener">فتح الإعلان في المصدر</a>':''))+
+ (t.demo||t.real?'':'<button class="btn del" data-del="'+esc(t.id)+'">حذف</button>')+'<button class="btn alt" data-close="1">إغلاق</button></div><div id="lbox"></div>');
+}
+function form(){
+ openSheet('<h2>إضافة عطاء</h2><label for="f1">عنوان العطاء</label><input id="f1">'+
+ '<label for="f2">المؤسسة</label><input id="f2" list="ol">'+'<datalist id="ol">'+ORGS.map(function(o){return'<option value="'+esc(o[0])+'">'}).join("")+'</datalist>'+
+ '<label for="f8">نوع الإعلان</label><select id="f8">'+TYPES.map(function(s){return'<option>'+esc(s)+'</option>'}).join("")+'</select>'+'<label for="f3">المجال</label><select id="f3">'+SECTORS.map(function(s){return'<option>'+esc(s)+'</option>'}).join("")+'</select>'+
+ '<div class="two"><div><label for="f4">تاريخ الطرح</label><input id="f4" type="date" value="'+off(0)+'"></div><div><label for="f5">تاريخ الانتهاء</label><input id="f5" type="date"></div></div>'+
+ '<label for="f6">رابط العطاء أو ملفه</label><input id="f6" type="url" placeholder="https://" dir="ltr">'+
+ '<label for="f9">الجهة الممولة</label><input id="f9"><label for="f10">عنوان المؤسسة في غزة</label><input id="f10"><label for="f11">طريقة التسليم</label><select id="f11"><option value="">غير محدد</option><option>إلكتروني عبر البريد</option><option>يدوي باليد</option><option>إلكتروني أو يدوي</option></select><label for="f12">طريقة الدفع</label><input id="f12"><div class="two"><div><label for="f13">وقت الطرح</label><input id="f13" type="time"></div><div><label for="f14">وقت الانتهاء</label><input id="f14" type="time"></div></div>'+
+ '<label for="f7">تفاصيل</label><textarea id="f7" rows="3"></textarea><p id="er" style="color:var(--bad);margin:8px 0 0"></p>'+
+ '<div class="actions"><button class="btn" id="sv">حفظ العطاء</button><button class="btn alt" data-close="1">إلغاء</button></div>');
+}
+document.addEventListener("click",function(e){
+ var t=e.target.closest("button,a");if(!t)return;
+ if(e.target.closest("[data-info]")){var cd=e.target.closest(".card");if(cd){detail(cd.dataset.id);return}}
+ if(t.dataset.tab){S.tab=t.dataset.tab;render();window.scrollTo(0,0)}
+ else if(t.classList.contains("card")){var tt=all().filter(function(x){return x.id===t.dataset.id})[0],uu=tt?lnk(tt):"",w=null;if(uu){try{w=window.open(uu,"_blank");if(w)w.opener=null}catch(x){}}if(!w)detail(t.dataset.id)}
+ else if(t.dataset.sec!==undefined&&t.classList.contains("chip")){S.sector=t.dataset.sec;render()}
+ else if(t.id==="im"){openSheet('<h2>استيراد قائمة العطاءات</h2><p style="color:var(--mute);margin:0 0 6px">شغّل جامع العطاءات للحصول على ملف tenders.json، ثم اختره هنا أو الصق محتواه.</p><input type="file" id="imf" accept=".json,application/json"><textarea id="imt" rows="6" dir="ltr" style="margin-top:8px" placeholder="[{...}]"></textarea><div class="actions"><button class="btn" id="imgo">استيراد</button><button class="btn alt" data-close="1">إغلاق</button></div><p id="imr" style="margin:10px 0 0"></p>')}
+ else if(t.id==="imgo"){doImport()}
+ else if(t.id==="csv"){var L=filtered(),qt=function(v){return'"'+String(v==null?"":v).replace(/"/g,'""')+'"'},cv=["العنوان,المؤسسة,النوع,المجال,المكان,الطرح,الانتهاء,المتبقي,الرابط"].concat(L.map(function(x){return[x.title,x.org,x.type||"عطاء",x.sector,x.loc||"قطاع غزة",x.pub,x.end,left(x.end),lnk(x)].map(qt).join(",")})).join("\n");try{navigator.clipboard.writeText(cv);t.textContent="تم نسخ "+L.length+" صف";setTimeout(function(){t.textContent="نسخ القائمة CSV"},2000)}catch(x){openSheet('<h2>CSV</h2><textarea rows="10" dir="ltr">'+esc(cv)+'</textarea>')}}
+ else if(t.id==="bk"){openSheet('<h2>ربط روابط الإعلانات</h2><p style="color:var(--mute);margin:0 0 6px">افتح كل إعلان في جوبس، انسخ رابطه، والصق الروابط هنا (كل رابط في سطر). التطبيق يطابق كل رابط مع عنوان العطاء من اسم الصفحة في الرابط.</p><textarea id="bt" rows="8" dir="ltr" placeholder="https://www.jobs.ps/tenders/..."></textarea><div class="actions"><button class="btn" id="bgo">ربط</button><button class="btn alt" data-close="1">إغلاق</button></div><p id="br" style="margin:10px 0 0"></p>')}
+ else if(t.id==="bgo"){bulkLink()}
+ else if(t.id==="sl"){document.getElementById("lbox").innerHTML='<label for="lu">الصق رابط الإعلان</label><input id="lu" type="url" dir="ltr" placeholder="https://"><div class="actions"><button class="btn" id="ls" data-id="'+t.dataset.id+'">حفظ الرابط</button></div><p id="le" style="color:var(--bad);margin:6px 0 0"></p>';document.getElementById("lu").focus()}
+ else if(t.id==="ls"){var u=document.getElementById("lu").value.trim();if(!/^https?:\/\//i.test(u)){document.getElementById("le").textContent="الرابط لازم يبدأ بـ https://";return}ULINKS[t.dataset.id]=u;try{localStorage.setItem("gaza_links_v1",JSON.stringify(ULINKS))}catch(x){}detail(t.dataset.id)}
+ else if(t.id==="ft"){S.fp=!S.fp;render()}
+ else if(t.id==="fr"){S.type="";S.sector="";S.loc="";S.status="open";S.sort="end";render()}
+ else if(t.id==="mn"){var ml=document.getElementById("mnl");ml.hidden=!ml.hidden}
+ else if(t.id==="lb"){document.getElementById("lf").click()}
+ else if(t.dataset.sort!==undefined&&t.classList.contains("chip")){S.sort=t.dataset.sort;render()}
+ else if(t.dataset.loc!==undefined&&t.classList.contains("chip")){S.loc=t.dataset.loc;render()}
+ else if(t.dataset.status!==undefined&&t.classList.contains("chip")){S.status=t.dataset.status;render()}
+ else if(t.dataset.type!==undefined&&t.classList.contains("chip")){S.type=t.dataset.type;render()}
+ else if(t.dataset.org){S.org=t.dataset.org;S.tab="tenders";S.status="";S.type="";S.sector="";S.loc="";render();window.scrollTo(0,0)}
+ else if(t.id==="co"){S.org="";render()}
+ else if(t.id==="hd"){S.hideDemo=true;try{localStorage.setItem(DKEY,"1")}catch(x){}render()}
+ else if(t.id==="add")form();
+ else if(t.dataset.close)closeSheet();
+ else if(t.dataset.del){S.user=S.user.filter(function(x){return x.id!==t.dataset.del});save();closeSheet();render()}
+ else if(t.id==="cp"){try{navigator.clipboard.writeText(t.dataset.u);t.textContent="تم النسخ"}catch(x){t.textContent="تعذر النسخ"}}
+ else if(t.id==="sv"){
+  var v=function(i){return document.getElementById(i).value.trim()};
+  if(!v("f1")||!v("f2")||!v("f5")){document.getElementById("er").textContent="اكتب العنوان والمؤسسة وتاريخ الانتهاء.";return}
+  S.user.push({id:"u"+Date.now(),title:v("f1"),org:v("f2"),sector:v("f3"),type:v("f8"),funder:v("f9"),addr:v("f10"),delivery:v("f11"),payment:v("f12"),pubTime:v("f13"),endTime:v("f14"),pub:v("f4")||off(0),end:v("f5"),url:v("f6"),desc:v("f7")});
+  save();closeSheet();S.tab="tenders";render();
+ }
+});
+document.getElementById("bg").addEventListener("click",function(e){if(e.target.id==="bg")closeSheet()});
+document.addEventListener("click",function(e){if(!e.target.closest||!e.target.closest(".menu")||e.target.closest(".mlist")){var l=document.getElementById("mnl");if(l)l.hidden=true}});
+document.addEventListener("change",function(e){var q=e.target;if(q.dataset&&q.dataset.f){S[q.dataset.f]=q.value;render();return}var f=e.target;if(f.id!=="lf"||!f.files[0])return;var org=f.dataset.org,id=f.dataset.id,r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var c=document.createElement("canvas");c.width=c.height=96;var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,96,96);var k=Math.min(96/im.width,96/im.height);x.drawImage(im,(96-im.width*k)/2,(96-im.height*k)/2,im.width*k,im.height*k);LOGOS[org]=c.toDataURL("image/png");try{localStorage.setItem("gaza_logos_v1",JSON.stringify(LOGOS))}catch(x2){}render();detail(id)};im.src=r.result};r.readAsDataURL(f.files[0])});
+document.getElementById("q").addEventListener("input",function(e){S.q=e.target.value;if(S.tab==="sources")S.tab="tenders";render();var q=document.getElementById("q");q.focus()});
+
+var SRCS=["parc","jobs","ptenders"],ERR={};
+function mapRows(d){var D=/^\d{4}-\d{2}-\d{2}$/;return d.filter(function(x){return x&&x.title&&D.test(x.end||"")}).map(function(x){return{id:String(x.id),title:String(x.title),org:String(x.org||"راجع الإعلان"),sector:x.sector||SECTORS[6],type:x.type||"عطاء",loc:x.loc||"",pub:D.test(x.pub||"")?x.pub:"",end:x.end,desc:String(x.desc||""),funder:x.funder||"",addr:x.addr||"",delivery:x.delivery||"",payment:x.payment||"",obtain:x.obtain||"",pubTime:x.pubTime||"",endTime:x.endTime||"",url:String(x.url||""),src:String(x.src||""),real:true}})}
+function mergeRows(rows){var m={};IMP.concat(rows).forEach(function(x){m[x.id]=x});IMP=Object.keys(m).map(function(k){return m[k]});try{localStorage.setItem("gaza_import_v1",JSON.stringify(IMP))}catch(e){}render()}
+async function loadAll(){var st=document.getElementById("upd");
+ for(var i=0;i<SRCS.length;i++){var n=SRCS[i];
+  for(var p=1;p<=80;p++){var j;
+   try{var r=await fetch("/api/source?name="+n+"&page="+p);if(!r.ok)break;j=await r.json()}catch(e){break}
+   var rows=mapRows(j.items||[]);if(rows.length)mergeRows(rows);
+   if(st)st.textContent="جارٍ التحديث… "+n+" (صفحة "+p+")";
+   if(j.error){ERR[n]=1;break}
+   if(j.done||!j.items.length)break;
+   if(p>=2&&!rows.some(function(x){return left(x.end)>=0}))break}}
+ if(st)st.textContent="آخر تحديث: "+new Date().toLocaleString("ar")+(Object.keys(ERR).length?" — تعذّر: "+Object.keys(ERR).join("، "):"")}
+loadAll();setInterval(loadAll,1800000);
+
+render();
+</script>
+</body>
+</html>
